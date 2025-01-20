@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Journaling Reflection</title>
+</head>
+<body>
+    <h1>Journaling Reflection</h1>
+
+    <!-- Textarea for user journaling -->
+    <textarea id="journalInput" rows="10" cols="50" placeholder="Write your thoughts here..."></textarea><br><br>
+
+    <!-- Button to trigger reflection -->
+    <button id="reflectBtn">Help Me Reflect</button>
+
+    <!-- Display the chosen question or guidance -->
+    <div id="questionDisplay"></div>
+    <!-- Display the current stage -->
+    <div id="stageDisplay"></div>
+
+    <script>
+        // High-level variables to track conversation state
+        let conversationSummary = "";
+        let lastInput = "";
+        let currentStage = ""; // We'll update this when we get a response
+
+        const journalInput = document.getElementById("journalInput");
+        const reflectBtn = document.getElementById("reflectBtn");
+        const questionDisplay = document.getElementById("questionDisplay");
+        const stageDisplay = document.getElementById("stageDisplay");
+
+        reflectBtn.addEventListener("click", async () => {
+            // 1) Capture current textarea text
+            const newInput = journalInput.value.trim();
+
+            // 2) Check discrepancy with lastInput
+            if (!newInput) {
+                // User deleted everything or empty
+                // Give a generic prompt to encourage writing
+                questionDisplay.innerText = "It looks like you've cleared your input. Feel free to write your thoughts here.";
+                // Optionally update or leave lastInput as empty
+                lastInput = "";
+            } else if (newInput !== lastInput) {
+                // There's a change in the text
+                lastInput = newInput;
+                // Optionally update conversation summary with a short snippet
+                // For now, we’ll just append a truncated version to keep it short
+                conversationSummary += `\nUser wrote: "${newInput.slice(0,50)}..."`; 
+            } else {
+                // No discrepancy: same text as last time
+                // We can keep lastInput as is, no update to conversationSummary
+            }
+
+            // 3) Send data to the backend
+            try {
+                const response = await fetch("/reflect", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        last_input: lastInput,
+                        conversation_summary: conversationSummary,
+                        current_stage: currentStage
+                    })
+                });
+                const result = await response.json();
+
+                // 4) Update the display with the question and stage from the backend
+                questionDisplay.innerText = result.final_output;
+                stageDisplay.innerText = `\n\nCurrent Stage: ${result.stage}`;
+
+                // 5) Update local stage and conversation summary
+                currentStage = result.stage;
+                // You may also want to update conversationSummary to shorten it or incorporate the model's response
+                conversationSummary += `\nSystem suggested: "${result.final_output.slice(0,50)}..."`;
+
+            } catch (error) {
+                console.error("Error:", error);
+                questionDisplay.innerText = "Something went wrong. Please try again.";
+            }
+        });
+    </script>
+</body>
+</html>
