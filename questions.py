@@ -1,4 +1,6 @@
 import openai
+import logging
+logging.basicConfig(level=logging.INFO)
 
 # This function uses OpenAI to figure out which stage user is in
 def detect_stage(last_input, conversation_summary):
@@ -14,12 +16,12 @@ def detect_stage(last_input, conversation_summary):
     Conversation summary so far:
     {conversation_summary}
 
-    Your task is to determine which stage of journaling reflection the user is in. Use the following descriptions of stages:
+    Your task is to determine which stage of journaling reflection the user is in. Use the following detailed descriptions of stages:
 
-    1) **Description**: The user is focused on recounting events or experiences. They are providing factual details, such as what happened or why they are journaling.
-    2) **Processing**: The user is identifying or unpacking emotions. They are reflecting on their emotional state, naming specific feelings, or trying to understand what they are going through emotionally.
-    3) **Analysis**: The user is exploring underlying causes. They are analyzing why certain events occurred or why they feel a certain way. They may be seeking patterns or deeper insights.
-    4) **Planning**: The user is focused on actionable steps or thinking about the future. They are creating goals, setting intentions, or thinking about principles to apply going forward.
+    1) **Description**: The user is recounting events or experiences in a factual way without mentioning emotions or deeper analysis. This stage focuses on what happened, providing details like who, what, where, and when. There is no emotional unpacking or reasoning involved. Keywords: "It was," "I went," "It happened."
+    2) **Processing**: The user is identifying or unpacking emotions. They are reflecting on their emotional state, naming specific feelings, or trying to understand what they are going through emotionally. Keywords: "I feel," "I am experiencing," "I noticed."
+    3) **Analysis**: The user is exploring underlying causes or reasons. They are analyzing why certain events occurred or why they feel a certain way. They may seek patterns, insights, or deeper reasoning. Keywords: "Why did this happen," "I think it is because," "I realize."
+    4) **Planning**: The user is focused on actionable steps or thinking about the future. They are creating goals, setting intentions, or thinking about principles to apply going forward. Keywords: "I will," "Next time," "Steps to take."
 
     Examples for reference:
     - Example of **Description**: "I had a stressful day at work today. I had two meetings and missed a deadline."
@@ -28,8 +30,8 @@ def detect_stage(last_input, conversation_summary):
     - Example of **Planning**: "Next time, I’ll break tasks into smaller steps and set more achievable deadlines."
 
     Based on the user's writing and conversation summary, respond ONLY with the stage name: 'description', 'processing', 'analysis', or 'planning'.
-    
-    If multiple stages seem to be mentioned, pick the one which is the BEST fit and prioritise what was said the user last wrote.
+
+    If multiple stages seem to be mentioned, pick the one which is the BEST fit and prioritize the user's last input. If the input is purely factual and lacks emotional or deeper reasoning, always choose 'description'.
     """
     
     # Example OpenAI call (GPT-3.5, etc.)
@@ -49,17 +51,18 @@ def detect_stage(last_input, conversation_summary):
     if stage not in ["description", "processing", "analysis", "planning"]:
         stage = "description"
 
+    logging.info(f"Detected Stage: {stage}")
     return stage
 
 # This function generates 3 distinct questions for the determined stage.
 def generate_questions_for_stage(stage, last_input, conversation_summary):
     """
     Asks OpenAI for 3 out-of-the-box questions relevant to the stage.
-    Each question should have 3 bullet points (sub questions or prompts).
+    Each question should have 3 talking points. And no more then 3 under any circumstances. (sub questions or prompts).
     """
 
     prompt = f"""
-    The user is currently in the '{stage}' stage of reflection. Your task is to generate **3 distinct questions** tailored to this stage. Each question must include **3 bullet points** with suggestions on how the user can expand their reflection. Avoid encouraging repetitive or circular journaling.
+    The user is currently in the '{stage}' stage of reflection. Your task is to generate **3 distinct questions** tailored to this stage. Each question must include **3 talking points. And no more then 3 under any circumstances.** with suggestions on how the user can expand their reflection. Avoid encouraging repetitive or circular journaling.
 
     Descriptions of stages:
     - **Description**: Focus on recounting events or experiences. Questions should help the user clarify details and organize their thoughts.
@@ -92,15 +95,28 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
         - Think about larger principles you want to apply in similar situations.  
         - Set a goal or intention for the next time you face this type of challenge.
 
-    Now, generate 3 questions tailored to the '{stage}' stage, each with 3 bullet points. Return the output in this format:
+    Now, generate 3 questions tailored to the '{stage}' stage, each with 3 talking points and no more under any circumstances
+    
+    Each bullet point should be somewhat abstract but not shocking. i.e. it should't be completely seperate from the MAIN QUESTION.
+    
+    But it SHOULD add personality and force the user to critically reflect in 3 different directions starting from the main question, to enable "bigger thinking" and "critical thinking."
 
-    1) QUESTION
-    - Bullet point 1
-    - Bullet point 2
-    - Bullet point 3
+    Return the output in this format:
 
-    2) QUESTION
-    ...
+    1) Main question goes here
+    - talking point 1
+    - talking point 2
+    - talking point 3
+
+    2) Main question goes here
+    - talking point 1
+    - talking point 2
+    - talking point 3
+
+    3) Main question goes here
+    - talking point 1
+    - talking point 2
+    - talking point 3
     """
 
     response = openai.ChatCompletion.create(
@@ -143,12 +159,12 @@ def pick_best_question(five_questions_text, last_input, conversation_summary, st
     - For **Analysis**: "What patterns do you notice in situations like this, and how do they affect you?"
     - For **Planning**: "What is one step you can take to address this challenge, and how will you ensure you stick to it?"
 
-    Respond ONLY with the single best question and its bullet points, formatted as:
+    Respond ONLY with the single best question and its talking points. And no more then 3 under any circumstances., formatted as:
 
-    QUESTION
-    - Bullet point 1
-    - Bullet point 2
-    - Bullet point 3
+    Main question goes here (ending in a question mark - no hyphem before it)
+    - Bullet point 1 (not ending in a question mark, phrased open-mindedly and not like an exam question)
+    - Bullet point 2 (not ending in a question mark, phrased open-mindedly and not like an exam question)
+    - Bullet point 3 (not ending in a question mark, phrased open-mindedly and not like an exam question)
     """
     
     response = openai.ChatCompletion.create(

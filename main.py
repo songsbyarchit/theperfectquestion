@@ -35,12 +35,14 @@ def reflect():
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a helpful and empathetic assistant that writes thoughtful acknowledgments for user journaling."},
-            {"role": "user", "content": (
-                f"The user wrote:\n{last_input}\n\n"
-                "Based on their input, write a thoughtful, warm empathetic acknowledgment that encourages them to reflect further. "
-                "Make it feel human-like, engaging, and supportive. If possible, highlight one specific part of their input to show understanding, "
-                "and gently guide them to keep journaling. It must be no longer than 12 words under any circumstances"
-            )}
+                {"role": "user", "content": (
+                    f"The user wrote:\n{last_input}\n\n"
+                    "Your task is to write a thoughtful and empathetic acknowledgment that makes the user feel heard and understood. "
+                    "The main thing you want to do is use PRAGMATISM or perhaps VERY LIGHT AND SUBTLE POETICISM to SEPERATE the user from what they've said while still making them feel that their concerns/thoughts are VALID"
+                    "Almost like a friend explaining VERY LOGICALLY or POETICALLY (not both) explaining why it's OKAY to feel that way, WITHOUT saying 'i also feel that way' or 'we all do' - more seperated and perhaps drawing on evolutionary biology or philosophy or poeticism in a playful way."
+                    "Your response must not include ANY imperatives or verbs which TELL the user to DO/FEEL/BE any verb which is prescriptive. Only acknowledgement and nothing else under any cirucmstances."
+                    "Your final response must be no longer than 12 words under any circumstances. It MUST be a sentence which flows and has a medium reading level - nothing which is too hard to process or too many obscure words. Avoid passive voice and don't use participle phrases. Make it somewhat informal and playful if appropriate."
+                )}
         ],
         max_tokens=100,
         temperature=0.7
