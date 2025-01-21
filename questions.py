@@ -59,13 +59,57 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     prompt = f"""
     The user is currently in the '{stage}' stage of reflection. Your task is to generate exactly **three questions** for EACH of the following categories:
 
-    1. "What if" questions: These are hypothetical, imaginative questions designed to challenge assumptions and expand the user’s perspective. They should reframe the situation by introducing alternative possibilities that feel vivid and tangible. The goal is to inspire curiosity and help the user see their thoughts or challenges from an entirely new angle.
+    1. "What if" questions: Hypothetical, imaginative questions designed to challenge assumptions and expand the user’s perspective. They should introduce vivid alternative possibilities and help the user imagine entirely new angles to their situation.
 
-    2. Force thinking questions: These are sharp, direct questions meant to generate quick, actionable ideas without overthinking. They should push the user out of their usual thought patterns, creating a sense of urgency or constraint to provoke fresh, practical insights. Each question should demand a response that cuts through indecision or complexity.
+    2. Force Thinking questions: Sharp, direct questions designed to provoke quick, actionable ideas without overthinking. They should push the user out of their usual patterns, forcing them to act or think decisively.
 
-    3. Belief questions: These are deep, probing questions that focus on uncovering the foundations of the user’s thoughts and beliefs. They should drill into the core of why the user feels or thinks a certain way, exploring origins, contradictions, or evidence. The aim is to invite introspection and challenge the user to critically examine the strength and validity of their beliefs.
+    3. Belief questions: Probing, introspective questions that examine the foundations of the user’s thoughts and beliefs. They should dig into origins, contradictions, or evidence to help the user reflect on why they think or feel the way they do.
 
-    Each question must be distinct, engaging, and appropriate for the '{stage}' stage. Return your questions in this format:
+    Your questions must be extremely specific to the user's last input and the provided conversation summary. Avoid generic rephrasing. Instead, extrapolate and build on the user's input to make them think bigger, challenge assumptions, and explore deeper reflections. Use your responses to add human-ness to the journaling process, making it feel engaging, personal, and surprising.
+
+    Below are examples demonstrating how questions should be generated based on user input:
+
+    **Examples of User Input and Generated Questions**:
+
+    User Input: "I feel stuck in my career."
+    **What if Questions:**
+    1) What if you could instantly switch to a different career—what would it be?
+    2) What if being “stuck” is actually an opportunity to slow down and reflect—how would that feel?
+    3) What if someone in your life saw your situation as inspiring—what might they admire?
+
+    **Force Thinking Questions:**
+    1) If you had one week to make a bold career move, what would it be?
+    2) What’s one skill you could learn right now to feel unstuck?
+    3) What would you do today if failure wasn’t an option?
+
+    **Belief Questions:**
+    1) Why do you believe being “stuck” is a negative thing—what’s driving that thought?
+    2) When did you start feeling this way about your career, and what triggered it?
+    3) Is there a belief about success that might be holding you back?
+
+    User Input: "I’m worried about a big presentation tomorrow."
+    **What if Questions:**
+    1) What if you gave the presentation to your best friend instead—how would it feel different?
+    2) What if the audience is rooting for you more than you think—how does that change your confidence?
+    3) What if this presentation could open doors to something you’ve always wanted—what’s the best-case outcome?
+
+    **Force Thinking Questions:**
+    1) If you had 10 minutes to prepare, what key points would you focus on?
+    2) What’s one unexpected question the audience might ask, and how would you answer?
+    3) What’s one thing you can do right now to calm your nerves?
+
+    **Belief Questions:**
+    1) Why do you believe this presentation defines your abilities—what else defines you?
+    2) Is there a past experience influencing your fear about tomorrow?
+    3) What evidence do you have that this will go badly—what’s missing in that picture?
+
+    Now, use the user's input and conversation summary to generate three **What if**, three **Force Thinking**, and three **Belief** questions that are deeply specific, engaging, and reflective. Avoid rephrasing what they’ve written; instead, extrapolate to create questions that challenge, inspire, or guide them toward new perspectives.
+
+    User Input: {last_input}
+
+    Conversation Summary: {conversation_summary}
+
+    Return your questions in this format:
 
     **What if Questions:**
     1) QUESTION
@@ -85,11 +129,11 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that generates diverse reflection questions for user journaling."},
+            {"role": "system", "content": "You are a helpful assistant that generates specific, creative, and thought-provoking questions tailored to user journaling."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=500,
-        temperature=0.7
+        max_tokens=1000,
+        temperature=0.8
     )
     return response.choices[0].message['content'].strip()
 

@@ -45,15 +45,19 @@ def reflect():
                 "3. If the user wrote, 'I forgot to water my plants,' respond with, 'Oops, plants are patient. They’ll wait for you.'\n"
                 "4. If the user wrote, 'I feel stuck in my career,' respond with, 'A little pause is just part of the climb.'\n"
                 "5. If the user wrote, 'I can't decide what to eat,' respond with, 'The eternal food debate! Take your time, no rush.'\n\n"
-                "Make your response playful and add a light assumption that flows naturally from the user's input."
-                "Your response must NOT include any imperatives, suggestions, presriptions or instructions for the user, NOT even playful ones."
+                "Make your response playful and add a light assumption that flows naturally from the user's input.\n"
+                "Your response must NOT include any imperatives, suggestions, presriptions or instructions for the user, NOT even playful ones.\n"
+                "Here are three examples of what NOT to do - notice no verbs should be directed at the user under any circumstances."
+                "- You should focus on being more confident in your presentation.\n"
+                "- Try to see this as an opportunity instead of a challenge.\n"
+                "- Make sure to relax and take deep breaths before your speech.\n\n\n"
                 "Your response must be no longer than 15 words under any circumstances and should feel friendly, simple, and easy to read."
             )}
         ],
         max_tokens=100,
         temperature=0.8
     )
-    acknowledgment = acknowledgment_response.choices[0].message['content'].strip()
+    acknowledgment = "\n" + acknowledgment_response.choices[0].message['content'].strip()
     final_output = f"{acknowledgment}\n\nMaybe think about this...\n\n{best_question}"
 
     # Return JSON to the front end
