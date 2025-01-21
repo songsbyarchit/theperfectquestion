@@ -61,7 +61,7 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
 
     1. "What if" questions: Hypothetical, imaginative questions designed to challenge assumptions and expand the user’s perspective. They should introduce vivid alternative possibilities and help the user imagine entirely new angles to their situation.
 
-    2. Force Thinking questions: Sharp, direct questions designed to provoke quick, actionable ideas without overthinking. They should push the user out of their usual patterns, forcing them to act or think decisively.
+    2. Force Thinking questions: Bold, provocative questions that create urgency and push the user to act decisively. Each question must paint a vivid scenario that challenges their typical thought patterns. The goal is to evoke an immediate response by presenting an unusual, high-stakes, or time-constrained situation. These questions should feel like they are forcing the user to break free from overthinking and explore unexpected, actionable ideas with intensity and creativity.
 
     3. Belief questions: Probing, introspective questions that examine the foundations of the user’s thoughts and beliefs. Each belief question must suggest **two specific and realistic influences** where this belief may have originated. The suggestions should use **common contexts or experiences** that are tailored to the user's input. Examples include:
         - Personal experiences in school, such as a critical teacher or a specific class environment.
@@ -77,29 +77,24 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
 
     Below are examples demonstrating how questions should be generated based on user input:
 
-    **Examples of User Input and Generated Questions**:
+    **What if Questions:**
+    User Input: "I’m worried about a big presentation tomorrow."
+    1) What if you gave the presentation to your best friend instead—how would it feel different?
+    2) What if the audience is rooting for you more than you think—how does that change your confidence?
+    3) What if this presentation could open doors to something you’ve always wanted—what’s the best-case outcome?
 
     User Input: "I feel stuck in my career."
-    **What if Questions:**
     1) What if you could instantly switch to a different career—what would it be?
     2) What if being “stuck” is actually an opportunity to slow down and reflect—how would that feel?
     3) What if someone in your life saw your situation as inspiring—what might they admire?
 
     **Force Thinking Questions:**
-    1) If you had one week to make a bold career move, what would it be?
-    2) What’s one skill you could learn right now to feel unstuck?
-    3) What would you do today if failure wasn’t an option?
-
     User Input: "I’m worried about a big presentation tomorrow."
-    **What if Questions:**
-    1) What if you gave the presentation to your best friend instead—how would it feel different?
-    2) What if the audience is rooting for you more than you think—how does that change your confidence?
-    3) What if this presentation could open doors to something you’ve always wanted—what’s the best-case outcome?
-
-    **Force Thinking Questions:**
-    1) If you had 10 minutes to prepare, what key points would you focus on?
-    2) What’s one unexpected question the audience might ask, and how would you answer?
-    3) What’s one thing you can do right now to calm your nerves?
+    1) If you had to decide your next step in 10 seconds, what is it?
+    2) What would you do differently if you could only focus for one hour a day?
+    3) If someone bet $1,000 you could fix this in a week, how would you start?
+    4) If a random stranger had to give you advice, what do you think they’d suggest?
+    5) What would change if you had to solve this problem without any external resources or help?
 
     **Belief Questions:**
     User Input: "I feel like I’m not good at public speaking."
@@ -151,6 +146,7 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     3) QUESTION
 
     - Each question must be concise and contain no more than 15 words under any circumstances.
+    - Reading level MUST be that of a well-read 20 year old MAXIMUM.
     - Questions must maintain clarity and provoke thought while remaining direct and engaging.
     """
 

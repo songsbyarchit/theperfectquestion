@@ -51,7 +51,7 @@ def reflect():
                 "EXAMPLE 1 of what NOT to do - You should focus on being more confident in your presentation.\n"
                 "EXAMPLE 2 of what NOT to do - Try to see this as an opportunity instead of a challenge.\n"
                 "EXAMPLE 3 of what NOT to do - Make sure to relax and take deep breaths before your speech.\n\n\n"
-                "Your response must be no longer than 7 words under any circumstances and should feel friendly, simple, and easy to read."
+                "Your response must be no longer than 10 words under any circumstances and should feel friendly, simple, and easy to read. It must be one sentence maximum."
             )}
         ],
         max_tokens=100,
