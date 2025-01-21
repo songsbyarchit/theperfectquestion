@@ -63,7 +63,12 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
 
     2. Force Thinking questions: Sharp, direct questions designed to provoke quick, actionable ideas without overthinking. They should push the user out of their usual patterns, forcing them to act or think decisively.
 
-    3. Belief questions: Probing, introspective questions that examine the foundations of the user’s thoughts and beliefs. They should dig into origins, contradictions, or evidence to help the user reflect on why they think or feel the way they do.
+    3. Belief questions: Probing, introspective questions that examine the foundations of the user’s thoughts and beliefs. These questions must explicitly suggest two realistic and plausible sources where the belief may have originated based on the user's input. Examples of sources could include:
+   - Personal experiences in school, work, or hobbies
+   - Influences from family dynamics or societal expectations
+   - Interactions with peers, mentors, or past authority figures
+
+    Your questions must extrapolate from the user's input, ensuring they feel deeply connected to their lived experience. Avoid general or abstract phrasing; instead, create engaging and reflective prompts that feel human and supportive.
 
     Your questions must be extremely specific to the user's last input and the provided conversation summary. Avoid generic rephrasing. Instead, extrapolate and build on the user's input to make them think bigger, challenge assumptions, and explore deeper reflections. Use your responses to add human-ness to the journaling process, making it feel engaging, personal, and surprising.
 
@@ -82,10 +87,10 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     2) What’s one skill you could learn right now to feel unstuck?
     3) What would you do today if failure wasn’t an option?
 
-    **Belief Questions:**
-    1) Why do you believe being “stuck” is a negative thing—what’s driving that thought?
-    2) When did you start feeling this way about your career, and what triggered it?
-    3) Is there a belief about success that might be holding you back?
+    Example structure for Belief Questions:
+    1) Why do you believe [insert belief]? Could this stem from [Suggestion 1] or [Suggestion 2]?
+    2) What experiences in [Suggestion 1] or [Suggestion 2] might have shaped this belief?
+    3) Do you think [Suggestion 1] or [Suggestion 2] still influence your perspective today?
 
     User Input: "I’m worried about a big presentation tomorrow."
     **What if Questions:**
