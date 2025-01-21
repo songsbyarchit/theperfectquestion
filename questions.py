@@ -59,70 +59,68 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     prompt = f"""
     The user is currently in the '{stage}' stage of reflection. Your task is to generate exactly **three questions** for EACH of the following categories:
 
-    1. "What if" questions: Hypothetical, imaginative questions designed to challenge assumptions and expand the user’s perspective. They should introduce vivid alternative possibilities and help the user imagine entirely new angles to their situation.
+    1. Reframing Questions: Create vivid, specific scenarios that challenge the user’s assumptions using contrarian reframes tied to their past experiences. At least two of the three questions MUST reference past moments where the opposite of their worry was proven true. Use varied phrasing—not every question needs to begin with "What if." However, include **exactly one** "What if" question in each block. Ensure scenarios are tangible, emotionally engaging, and highlight realistic possibilities that oppose the user’s current perspective.
 
-    2. Force Thinking questions: Bold, provocative questions that create urgency and push the user to act decisively. Each question must paint a vivid scenario that challenges their typical thought patterns. The goal is to evoke an immediate response by presenting an unusual, high-stakes, or time-constrained situation. These questions should feel like they are forcing the user to break free from overthinking and explore unexpected, actionable ideas with intensity and creativity.
+    2. Force Thinking Questions: Present vivid, high-stakes scenarios that demand immediate, specific responses tailored to the user’s input. Avoid vague or generic phrases like "bold action" or "step forward." Instead, focus on clear, tangible actions or decisions the user could realistically consider. Use time constraints, surprising constraints, or vivid hypothetical situations to provoke urgency and creativity. Ensure questions are direct, actionable, and specific enough to challenge overthinking while sparking decisive ideas.
 
-    3. Belief questions: Probing, introspective questions that examine the foundations of the user’s thoughts and beliefs. Each belief question must suggest **two specific and realistic influences** where this belief may have originated. The suggestions should use **common contexts or experiences** that are tailored to the user's input. Examples include:
-        - Personal experiences in school, such as a critical teacher or a specific class environment.
-        - Work challenges, such as feedback from a manager or dealing with workplace culture.
-        - Parental or familial influences, including expectations or values instilled during childhood.
-        - Social norms, shaped by peers or cultural pressures, such as fitting into certain roles.
-        - Feedback or interactions in hobbies, like competing in sports or participating in creative projects.
-        For each belief question, you MUST provide EXACTLY TWO concrete, VERY specific, almost vivid suggestions of what caused the belief. Avoid vague references like "your past" or "childhood". Ensure your questions are actionable and challenge the user to think critically about whether these influences still apply to their current perspective.
+    3. Belief Questions: Confidently examine the foundations of the user’s beliefs by suggesting EXACTLY TWO specific influences. These must be vivid, realistic, and easy to imagine, avoiding vague references like "societal pressures" or "childhood experiences." Each question must confidently tie the belief to two concrete contexts (e.g., critical feedback at work and family values) and imply they still shape the user’s perspective. Be direct, not tentative—ensure the questions are actionable and grounded in relatable experiences.
 
     Your questions must extrapolate from the user's input, ensuring they feel deeply connected to their lived experience. Avoid general or abstract phrasing; instead, create engaging and reflective prompts that feel human and supportive.
 
-    Your questions must be extremely specific to the user's last input and the provided conversation summary. Avoid generic rephrasing. Instead, extrapolate and build on the user's input to make them think bigger, challenge assumptions, and explore deeper reflections. Use your responses to add human-ness to the journaling process, making it feel engaging, personal, and surprising.
-
     Below are examples demonstrating how questions should be generated based on user input:
 
-    **What if Questions:**
-    User Input: "I’m worried about a big presentation tomorrow."
-    1) What if you gave the presentation to your best friend instead—how would it feel different?
-    2) What if the audience is rooting for you more than you think—how does that change your confidence?
-    3) What if this presentation could open doors to something you’ve always wanted—what’s the best-case outcome?
+    **Reframing Questions:**
 
-    User Input: "I feel stuck in my career."
-    1) What if you could instantly switch to a different career—what would it be?
-    2) What if being “stuck” is actually an opportunity to slow down and reflect—how would that feel?
-    3) What if someone in your life saw your situation as inspiring—what might they admire?
+    **User Input:** "I’m worried about a big presentation tomorrow."  
+    1) What if you remembered the last time you spoke confidently and others praised your clarity—how would that change things?  
+    2) Think back to when your preparation led to surprising success—what could you replicate this time?  
+    3) Could forgetting a detail make you more relatable to the audience, instead of harming your credibility?
+
+    **User Input:** "I feel stuck in my career."  
+    1) What if you remembered a past job where feeling stuck led to your next big leap—what might this lead to?  
+    2) Recall a time when mastering one new skill opened unexpected doors—what skill might do that now?  
+    3) Imagine someone asking for career advice because they admire your growth—what would you share with them?
+
+    **User Input:** "I feel like I’ll never be good at relationships."  
+    1) What if someone told you they admired how deeply you listen, even when you feel awkward?  
+    2) Recall a time you formed an unexpected connection—what worked well in that moment?  
+    3) Imagine a small, kind action this week made someone see you as trustworthy—what would that action be?
 
     **Force Thinking Questions:**
-    User Input: "I’m worried about a big presentation tomorrow."
-    1) If you had to decide your next step in 10 seconds, what is it?
-    2) What would you do differently if you could only focus for one hour a day?
-    3) If someone bet $1,000 you could fix this in a week, how would you start?
-    4) If a random stranger had to give you advice, what do you think they’d suggest?
-    5) What would change if you had to solve this problem without any external resources or help?
+
+    User Input: "I’m worried about a big presentation tomorrow."  
+    1) If you had just 10 minutes to prepare, what key points would you prioritise?  
+    2) If you had to impress someone important with one sentence, what would it be?  
+    3) If an audience member had advice for you mid-presentation, what do you imagine they’d say?
+
+    User Input: "I feel stuck in my career."  
+    1) If you had one week to make a bold career move, what would it be?  
+    2) What’s one skill you could learn right now to feel unstuck?  
+    3) If quitting your job meant pursuing your dream, what dream would you chase?
+
+    User Input: "I feel like I’ll never improve at sports."  
+    1) If you could only practice for 10 minutes a day, what would you focus on?  
+    2) If one tweak in technique made a visible difference, what would you adjust first?  
+    3) What would change if a coach guaranteed your improvement after consistent effort for one month?
 
     **Belief Questions:**
-    User Input: "I feel like I’m not good at public speaking."
-    1) Why do you believe this? Could it stem from school presentations or critical feedback from peers?
-    2) Did a teacher’s comments or a past failed speech influence your belief in this?
-    3) Do your memories of school debates or work presentations still shape how you see yourself?
 
-    User Input: "I’m not creative enough to pursue art."
-    1) Why do you believe this? Could it stem from family expectations or early art class struggles?
-    2) Did a parent's focus on practical skills or a discouraging teacher shape your view on creativity?
-    3) Do your family’s career values or past school competitions still impact your belief today?
+    User Input: "I feel like I’m not good at public speaking."  
+    1) Does this stem from school presentations or peer feedback that still shapes your confidence?  
+    2) Did a teacher’s criticism or a failed speech plant this belief—how relevant is that now?  
+    3) Do memories of school debates or work presentations still influence how you view public speaking?
 
-    User Input: "I can’t trust people easily."
-    1) Why do you believe this? Could it stem from a past betrayal or difficult friendships?
-    2) Did an old friend breaking your trust or a childhood experience shape this belief?
-    3) Does a specific friendship or your family’s communication style still influence how you trust?
+    User Input: "I’m not creative enough to pursue art."  
+    1) Did family expectations or struggles in art class lead to this belief—how valid is it today?  
+    2) Did a parent’s focus on practicality or a teacher’s critique limit your confidence in creativity?  
+    3) Do family values or past competitions still influence how you see your creative potential?
 
-    User Input: "I’m bad at sports."
-    1) Why do you believe this? Could it stem from PE classes or being excluded from teams?
-    2) Did an injury or critical feedback from a coach affect your view of yourself in sports?
-    3) Do memories of team selection or specific PE events still hold you back today?
+    User Input: "I feel like I’m not successful enough."  
+    1) Does this belief come from parental expectations or peer comparisons still affecting you today?  
+    2) Did a sibling’s achievements or workplace pressures shape this—how can you redefine success for yourself?  
+    3) Do family benchmarks or academic pressures still shape your idea of what success should look like?
 
-    User Input: "I feel like I’m not successful enough."
-    1) Why do you believe this? Could it stem from parental expectations or peer comparisons in school?
-    2) Did a sibling’s achievements or a tough workplace shape this belief about success?
-    3) Do your family’s success benchmarks or past academic pressures still shape how you measure success?
-
-    Now, use the user's input and conversation summary to generate three **What if**, three **Force Thinking**, and three **Belief** questions that are deeply specific, engaging, and reflective. Avoid rephrasing what they’ve written; instead, extrapolate to create questions that challenge, inspire, or guide them toward new perspectives.
+    Now, use the user's input and conversation summary to generate three **Reframing**, three **Force Thinking**, and three **Belief** questions that are deeply specific, engaging, and reflective. Avoid rephrasing what they’ve written; instead, extrapolate to create questions that challenge, inspire, or guide them toward new perspectives.
 
     User Input: {last_input}
 
@@ -130,23 +128,24 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
 
     Return your questions in this format:
 
-    **What if Questions:**
-    1) QUESTION
-    2) QUESTION
-    3) QUESTION
+    **Reframing Questions:**  
+    1) QUESTION  
+    2) QUESTION  
+    3) QUESTION  
 
-    **Force Thinking Questions:**
-    1) QUESTION
-    2) QUESTION
-    3) QUESTION
+    **Force Thinking Questions:**  
+    1) QUESTION  
+    2) QUESTION  
+    3) QUESTION  
 
-    **Belief Questions:**
-    1) QUESTION
-    2) QUESTION
-    3) QUESTION
+    **Belief Questions:**  
+    1) QUESTION  
+    2) QUESTION  
+    3) QUESTION  
 
-    - Each question must be concise and contain no more than 15 words under any circumstances.
-    - Reading level MUST be that of a well-read 20 year old MAXIMUM.
+    - Ensure exactly one "What if" question per block for variety.  
+    - Each question must be concise and contain no more than 20 words under any circumstances.  
+    - Reading level MUST be that of a well-read 18 year old and NO HIGHER THAN THIS.  
     - Questions must maintain clarity and provoke thought while remaining direct and engaging.
     """
 
