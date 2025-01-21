@@ -56,91 +56,53 @@ def detect_stage(last_input, conversation_summary):
 
 # This function generates 3 distinct questions for the determined stage.
 def generate_questions_for_stage(stage, last_input, conversation_summary):
-    """
-    Asks OpenAI for 3 out-of-the-box questions relevant to the stage.
-    Each question should have 3 talking points. And no more then 3 under any circumstances. (sub questions or prompts).
-    """
-
     prompt = f"""
-    The user is currently in the '{stage}' stage of reflection. Your task is to generate **3 distinct questions** tailored to this stage. Each question must include **3 talking points. And no more then 3 under any circumstances.** with suggestions on how the user can expand their reflection. Avoid encouraging repetitive or circular journaling.
+    The user is currently in the '{stage}' stage of reflection. Your task is to generate exactly **three questions** for EACH of the following categories:
 
-    Descriptions of stages:
-    - **Description**: Focus on recounting events or experiences. Questions should help the user clarify details and organize their thoughts.
-    - **Processing**: Focus on identifying and unpacking emotions. Questions should encourage naming feelings and understanding emotional responses.
-    - **Analysis**: Focus on exploring underlying causes. Questions should guide the user toward deeper insights about their thoughts, patterns, or behaviors.
-    - **Planning**: Focus on actionable steps or forward-thinking. Questions should help the user set intentions, define goals, or plan for the future.
+    1. "What if" questions: These are hypothetical, imaginative questions designed to challenge assumptions and expand the user’s perspective. They should reframe the situation by introducing alternative possibilities that feel vivid and tangible. The goal is to inspire curiosity and help the user see their thoughts or challenges from an entirely new angle.
 
-    Examples for each stage:
-    - **Description**:
-    1) What happened during this experience?  
-        - Write down key events in chronological order.
-        - Focus on specific moments that stood out to you.
-        - Avoid analyzing or judging the events—just describe them.
-    
-    - **Processing**:
-    1) What emotions are you experiencing right now?  
-        - Name the feelings you're going through (e.g., anger, sadness, joy).  
-        - Reflect on when these emotions began and how they’ve evolved.  
-        - Consider whether these emotions are connected to specific events or thoughts.
+    2. Force thinking questions: These are sharp, direct questions meant to generate quick, actionable ideas without overthinking. They should push the user out of their usual thought patterns, creating a sense of urgency or constraint to provoke fresh, practical insights. Each question should demand a response that cuts through indecision or complexity.
 
-    - **Analysis**:
-    1) Why do you think this happened?  
-        - Identify possible triggers or causes for this event.  
-        - Reflect on patterns that might be repeating in your life.  
-        - Explore whether any assumptions or beliefs influenced your actions.
+    3. Belief questions: These are deep, probing questions that focus on uncovering the foundations of the user’s thoughts and beliefs. They should drill into the core of why the user feels or thinks a certain way, exploring origins, contradictions, or evidence. The aim is to invite introspection and challenge the user to critically examine the strength and validity of their beliefs.
 
-    - **Planning**:
-    1) What steps can you take to address this situation moving forward?  
-        - Identify one small, actionable step you can take immediately.  
-        - Think about larger principles you want to apply in similar situations.  
-        - Set a goal or intention for the next time you face this type of challenge.
+    Each question must be distinct, engaging, and appropriate for the '{stage}' stage. Return your questions in this format:
 
-    Now, generate 3 questions tailored to the '{stage}' stage, each with 3 talking points and no more under any circumstances
-    
-    Each bullet point should be somewhat abstract but not shocking. i.e. it should't be completely seperate from the MAIN QUESTION.
-    
-    But it SHOULD add personality and force the user to critically reflect in 3 different directions starting from the main question, to enable "bigger thinking" and "critical thinking."
+    **What if Questions:**
+    1) QUESTION
+    2) QUESTION
+    3) QUESTION
 
-    Return the output in this format:
+    **Force Thinking Questions:**
+    1) QUESTION
+    2) QUESTION
+    3) QUESTION
 
-    1) Main question goes here
-    - talking point 1
-    - talking point 2
-    - talking point 3
-
-    2) Main question goes here
-    - talking point 1
-    - talking point 2
-    - talking point 3
-
-    3) Main question goes here
-    - talking point 1
-    - talking point 2
-    - talking point 3
+    **Belief Questions:**
+    1) QUESTION
+    2) QUESTION
+    3) QUESTION
     """
-
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that generates 3 out-of-the-box questions for reflection stages."},
+            {"role": "system", "content": "You are a helpful assistant that generates diverse reflection questions for user journaling."},
             {"role": "user", "content": prompt}
         ],
         max_tokens=500,
         temperature=0.7
     )
-
     return response.choices[0].message['content'].strip()
 
-# This function picks the SINGLE best question out of the 3 by calling OpenAI again
-def pick_best_question(five_questions_text, last_input, conversation_summary, stage):
+# This function picks the best question from each category ("What if," "Force Thinking," "Belief") by calling OpenAI
+def pick_best_question(questions_text, last_input, conversation_summary, stage):
     """
-    Takes the 3 questions generated, and calls OpenAI to pick the best one
-    given the user's current stage, last_input, and conversation_summary.
+    Takes the questions generated and selects one best question from each category
+    ("What if," "Force Thinking," "Belief") based on the user's current stage, last_input, and conversation_summary.
     """
     prompt = f"""
-    We have these 3 questions generated for the user:
+    Here are the questions generated for the user:
 
-    {five_questions_text}
+    {questions_text}
 
     The user's most recent input:
     {last_input}
@@ -148,34 +110,34 @@ def pick_best_question(five_questions_text, last_input, conversation_summary, st
     Conversation summary so far:
     {conversation_summary}
 
-    Your task is to pick the **single best question** from the list above. Consider the following criteria:
+    Your task is to select exactly one question from EACH of the following categories based on the existing questions provided:
+    - "What if" questions: Hypothetical questions that challenge assumptions, expand possibilities, and help reframe perspectives.
+    - Force Thinking questions: Direct, sharp questions that provoke actionable ideas and encourage quick thinking without overanalyzing.
+    - Belief questions: Probing questions that explore the roots of the user's beliefs, examining why they think or feel a certain way.
+
+    Selection criteria:
     1) The question must align with the user's current stage of reflection ('{stage}').
-    2) The question must avoid repetition of what the user has already explored.
-    3) The question should encourage the user to move forward in their reflection, offering new insights or actionable ideas.
+    2) The question must be thought-provoking, offering the user new insights or ways to approach their reflection.
+    3) The question must avoid repetition and feel distinct, ensuring diversity in the types of reflections it inspires.
+    4) Select only from the provided questions. Do NOT invent or generate new questions.
 
-    Examples of "best" questions:
-    - For **Description**: "What specific events or details from today stand out the most, and why?"
-    - For **Processing**: "What is one emotion you're feeling right now, and what might have triggered it?"
-    - For **Analysis**: "What patterns do you notice in situations like this, and how do they affect you?"
-    - For **Planning**: "What is one step you can take to address this challenge, and how will you ensure you stick to it?"
+    Respond with exactly three questions in this order, without any titles, headings, or additional commentary:
 
-    Respond ONLY with the single best question and its talking points. And no more then 3 under any circumstances., formatted as:
+    [What if question]
 
-    Main question goes here (ending in a question mark - no hyphem before it)
-    - Bullet point 1 (not ending in a question mark, phrased open-mindedly and not like an exam question)
-    - Bullet point 2 (not ending in a question mark, phrased open-mindedly and not like an exam question)
-    - Bullet point 3 (not ending in a question mark, phrased open-mindedly and not like an exam question)
+    [Force Thinking question]
+
+    [Belief question]
     """
-    
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that selects the single best reflection question based on the user's input and stage."},
+            {"role": "system", "content": "You are a helpful assistant that selects the best reflection questions from provided options."},
             {"role": "user", "content": prompt}
         ],
         max_tokens=300,
         temperature=0.7
     )
 
-    best_question = response.choices[0].message['content'].strip()
-    return best_question
+    best_questions = response.choices[0].message['content'].strip()
+    return best_questions

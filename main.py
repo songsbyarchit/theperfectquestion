@@ -34,21 +34,27 @@ def reflect():
     acknowledgment_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful and empathetic assistant that writes thoughtful acknowledgments for user journaling."},
-                {"role": "user", "content": (
-                    f"The user wrote:\n{last_input}\n\n"
-                    "Your task is to write a thoughtful and empathetic acknowledgment that makes the user feel heard and understood. "
-                    "The main thing you want to do is use PRAGMATISM or perhaps VERY LIGHT AND SUBTLE POETICISM to SEPERATE the user from what they've said while still making them feel that their concerns/thoughts are VALID"
-                    "Almost like a friend explaining VERY LOGICALLY or POETICALLY (not both) explaining why it's OKAY to feel that way, WITHOUT saying 'i also feel that way' or 'we all do' - more seperated and perhaps drawing on evolutionary biology or philosophy or poeticism in a playful way."
-                    "Your response must not include ANY imperatives or verbs which TELL the user to DO/FEEL/BE any verb which is prescriptive. Only acknowledgement and nothing else under any cirucmstances."
-                    "Your final response must be no longer than 12 words under any circumstances. It MUST be a sentence which flows and has a medium reading level - nothing which is too hard to process or too many obscure words. Avoid passive voice and don't use participle phrases. Make it somewhat informal and playful if appropriate."
-                )}
+            {"role": "system", "content": "You are a playful and cheeky assistant that writes teasing acknowledgments for user journaling."},
+            {"role": "user", "content": (
+                f"The user wrote:\n{last_input}\n\n"
+                "Your task is to write a playful acknowledgment that lightly extrapolates or makes a cheeky assumption based on the user's input. "
+                "The goal is to add a bit of humor or charm, perhaps even to the point of slight rudeness/edginess. Keep the reading level MODERATELY LOW and simpler sentence structures."
+                "For example:\n"
+                "1. If the user wrote, 'I'm worried about dating,' respond with, 'Ahh, romantically entangled are we? Happens to the best of us.'\n"
+                "2. If the user wrote, 'I missed my morning workout,' respond with, 'Ah, the gym will forgive you this time.'\n"
+                "3. If the user wrote, 'I forgot to water my plants,' respond with, 'Oops, plants are patient. They’ll wait for you.'\n"
+                "4. If the user wrote, 'I feel stuck in my career,' respond with, 'A little pause is just part of the climb.'\n"
+                "5. If the user wrote, 'I can't decide what to eat,' respond with, 'The eternal food debate! Take your time, no rush.'\n\n"
+                "Make your response playful and add a light assumption that flows naturally from the user's input."
+                "Your response must NOT include any imperatives, suggestions, presriptions or instructions for the user, NOT even playful ones."
+                "Your response must be no longer than 15 words under any circumstances and should feel friendly, simple, and easy to read."
+            )}
         ],
         max_tokens=100,
-        temperature=0.7
+        temperature=0.8
     )
     acknowledgment = acknowledgment_response.choices[0].message['content'].strip()
-    final_output = f"{acknowledgment}\n\nHere’s a question you might explore:\n{best_question}"
+    final_output = f"{acknowledgment}\n\nMaybe think about this...\n\n{best_question}"
 
     # Return JSON to the front end
     return jsonify({
