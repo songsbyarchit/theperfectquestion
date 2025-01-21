@@ -63,10 +63,13 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
 
     2. Force Thinking questions: Sharp, direct questions designed to provoke quick, actionable ideas without overthinking. They should push the user out of their usual patterns, forcing them to act or think decisively.
 
-    3. Belief questions: Probing, introspective questions that examine the foundations of the user’s thoughts and beliefs. These questions must explicitly suggest two realistic and plausible sources where the belief may have originated based on the user's input. Examples of sources could include:
-   - Personal experiences in school, work, or hobbies
-   - Influences from family dynamics or societal expectations
-   - Interactions with peers, mentors, or past authority figures
+    3. Belief questions: Probing, introspective questions that examine the foundations of the user’s thoughts and beliefs. Each belief question must suggest **two specific and realistic influences** where this belief may have originated. The suggestions should use **common contexts or experiences** that are tailored to the user's input. Examples include:
+        - Personal experiences in school, such as a critical teacher or a specific class environment.
+        - Work challenges, such as feedback from a manager or dealing with workplace culture.
+        - Parental or familial influences, including expectations or values instilled during childhood.
+        - Social norms, shaped by peers or cultural pressures, such as fitting into certain roles.
+        - Feedback or interactions in hobbies, like competing in sports or participating in creative projects.
+        For each belief question, you MUST provide EXACTLY TWO concrete, VERY specific, almost vivid suggestions of what caused the belief. Avoid vague references like "your past" or "childhood". Ensure your questions are actionable and challenge the user to think critically about whether these influences still apply to their current perspective.
 
     Your questions must extrapolate from the user's input, ensuring they feel deeply connected to their lived experience. Avoid general or abstract phrasing; instead, create engaging and reflective prompts that feel human and supportive.
 
@@ -87,11 +90,6 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     2) What’s one skill you could learn right now to feel unstuck?
     3) What would you do today if failure wasn’t an option?
 
-    Example structure for Belief Questions:
-    1) Why do you believe [insert belief]? Could this stem from [Suggestion 1] or [Suggestion 2]?
-    2) What experiences in [Suggestion 1] or [Suggestion 2] might have shaped this belief?
-    3) Do you think [Suggestion 1] or [Suggestion 2] still influence your perspective today?
-
     User Input: "I’m worried about a big presentation tomorrow."
     **What if Questions:**
     1) What if you gave the presentation to your best friend instead—how would it feel different?
@@ -104,9 +102,30 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     3) What’s one thing you can do right now to calm your nerves?
 
     **Belief Questions:**
-    1) Why do you believe this presentation defines your abilities—what else defines you?
-    2) Is there a past experience influencing your fear about tomorrow?
-    3) What evidence do you have that this will go badly—what’s missing in that picture?
+    User Input: "I feel like I’m not good at public speaking."
+    1) Why do you believe this? Could it stem from school presentations or critical feedback from peers?
+    2) Did a teacher’s comments or a past failed speech influence your belief in this?
+    3) Do your memories of school debates or work presentations still shape how you see yourself?
+
+    User Input: "I’m not creative enough to pursue art."
+    1) Why do you believe this? Could it stem from family expectations or early art class struggles?
+    2) Did a parent's focus on practical skills or a discouraging teacher shape your view on creativity?
+    3) Do your family’s career values or past school competitions still impact your belief today?
+
+    User Input: "I can’t trust people easily."
+    1) Why do you believe this? Could it stem from a past betrayal or difficult friendships?
+    2) Did an old friend breaking your trust or a childhood experience shape this belief?
+    3) Does a specific friendship or your family’s communication style still influence how you trust?
+
+    User Input: "I’m bad at sports."
+    1) Why do you believe this? Could it stem from PE classes or being excluded from teams?
+    2) Did an injury or critical feedback from a coach affect your view of yourself in sports?
+    3) Do memories of team selection or specific PE events still hold you back today?
+
+    User Input: "I feel like I’m not successful enough."
+    1) Why do you believe this? Could it stem from parental expectations or peer comparisons in school?
+    2) Did a sibling’s achievements or a tough workplace shape this belief about success?
+    3) Do your family’s success benchmarks or past academic pressures still shape how you measure success?
 
     Now, use the user's input and conversation summary to generate three **What if**, three **Force Thinking**, and three **Belief** questions that are deeply specific, engaging, and reflective. Avoid rephrasing what they’ve written; instead, extrapolate to create questions that challenge, inspire, or guide them toward new perspectives.
 
@@ -130,7 +149,11 @@ def generate_questions_for_stage(stage, last_input, conversation_summary):
     1) QUESTION
     2) QUESTION
     3) QUESTION
+
+    - Each question must be concise and contain no more than 15 words under any circumstances.
+    - Questions must maintain clarity and provoke thought while remaining direct and engaging.
     """
+
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[

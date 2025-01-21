@@ -38,7 +38,7 @@ def reflect():
             {"role": "user", "content": (
                 f"The user wrote:\n{last_input}\n\n"
                 "Your task is to write a playful acknowledgment that lightly extrapolates or makes a cheeky assumption based on the user's input. "
-                "The goal is to add a bit of humor or charm, perhaps even to the point of slight rudeness/edginess. Keep the reading level MODERATELY LOW and simpler sentence structures."
+                "The goal is to add a bit of humor or charm, perhaps even to the point of slight rudeness/edginess. Keep the reading level MODERATELY LOW and simple sentence structure."
                 "For example:\n"
                 "1. If the user wrote, 'I'm worried about dating,' respond with, 'Ahh, romantically entangled are we? Happens to the best of us.'\n"
                 "2. If the user wrote, 'I missed my morning workout,' respond with, 'Ah, the gym will forgive you this time.'\n"
@@ -47,10 +47,10 @@ def reflect():
                 "5. If the user wrote, 'I can't decide what to eat,' respond with, 'Ah, the eternal food debate!'\n\n"
                 "Make your response playful and add a light assumption that flows naturally from the user's input.\n"
                 "Your response must NOT include any imperatives, suggestions, presriptions or instructions for the user, NOT even playful ones.\n"
-                "Here are three examples of what NOT to do - notice no verbs should be directed at the user under any circumstances."
-                "- You should focus on being more confident in your presentation.\n"
-                "- Try to see this as an opportunity instead of a challenge.\n"
-                "- Make sure to relax and take deep breaths before your speech.\n\n\n"
+                "Here are three examples of what NOT to do - o verbs should be directed at the user under any circumstances."
+                "EXAMPLE 1 of what NOT to do - You should focus on being more confident in your presentation.\n"
+                "EXAMPLE 2 of what NOT to do - Try to see this as an opportunity instead of a challenge.\n"
+                "EXAMPLE 3 of what NOT to do - Make sure to relax and take deep breaths before your speech.\n\n\n"
                 "Your response must be no longer than 7 words under any circumstances and should feel friendly, simple, and easy to read."
             )}
         ],
